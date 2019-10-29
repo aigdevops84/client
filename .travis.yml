@@ -7,16 +7,10 @@ before_install:
 
 script:
   - docker run -e CI=true aizenbergivan/dockerone npm run test
-deploy:
-  provider: elasticbeanstalk
-  region: "us-west-2"
-  app: "client"
-  env: "client-env"
-  bucket_name: "elasticbeanstalk-us-west-2-670787634286"
-  bucket_path: "client"
-  on:
-    branch: master
-  access_key_id:
-    secure: "$AWS_ACCESS_KEY"
-  secret_access_key:
-    secure: "$AWS_SECRET_KEY"
+
+after_success:
+  - docker build -t aizenbergivan/client
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push aizenbergivan/client
