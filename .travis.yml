@@ -9,8 +9,8 @@ script:
   - docker run -e CI=true aizenbergivan/dockerone npm run test
 
 after_success:
-  - docker build -t aizenbergivan/client
+  - docker build -t aizenbergivan/newclient
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push aizenbergivan/client
+  - docker push aizenbergivan/newclient
